@@ -2,6 +2,46 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.155.0/build/three.m
 
 // --- Project Data for Modals ---
 const projectsData = {
+    "fpv-drone": {
+        title: "Mixed Reality FPV Drone",
+        subtitle: "Innovation Project — ESILV A5 Createch · Supervised by Xiao Xiao & Gaël Musquet",
+        description: "Bridging legacy analog FPV drone technology with a Meta Quest 2 to create an affordable Mixed Reality cockpit — a sub-€50 alternative to dedicated FPV goggles, with Passthrough and hand-tracking for full spatial awareness.",
+        sections: [
+            {
+                heading: "System Architecture",
+                body: `<ul class="list-disc list-inside space-y-1">
+                    <li><strong>Transmitter:</strong> BetaFPV Meteor 75 Pro Tinywhoop (analog camera + 5.8GHz VTX)</li>
+                    <li><strong>Receiver:</strong> Eachine ROTG02 — skew planar antennas + 5.8GHz RX → analog/digital (UVC) converter</li>
+                    <li><strong>Processing:</strong> Meta Quest 2 (Android OS). The ROTG02 mounts as <code class="text-accent">/dev/video0</code>; the headset merges the drone feed with Passthrough.</li>
+                    <li><strong>Radio Controller:</strong> BetaFPV Literadio 4</li>
+                </ul>`
+            },
+            {
+                heading: "Iterations & Prototyping",
+                body: `<ol class="list-decimal list-inside space-y-3">
+                    <li><strong>PC-tethered concept.</strong> UVC receiver plugged into a Windows PC, monitored via webcam software. Latency (~100ms) was acceptable but the pilot was chained to a desk — portability, the whole point of FPV, was lost.</li>
+                    <li><strong>Standalone VR.</strong> OTG cable straight into the Quest 2's USB-C port; UVC apps sideloaded via SideQuest. Immersive and portable, but the receiver dangled from the headset and the bulky VR controllers were incompatible with holding a drone radio.</li>
+                    <li><strong>Mixed Reality + hand-tracking (final).</strong> Receiver secured with velcro to the headset strap. Native hand-tracking drives the UI (pinch to launch, tune frequency); a double-tap on the headset toggles Passthrough so the pilot sees the room and the physical radio while the drone feed stays centered on a floating virtual screen.</li>
+                </ol>`
+            },
+            {
+                heading: "Contributions",
+                body: `<ul class="list-disc list-inside space-y-2">
+                    <li><strong>Hardware accessibility.</strong> Validated transmission chain turning a Quest 2 into FPV goggles for under €50 in added hardware, vs €200+ for dedicated analog goggles.</li>
+                    <li><strong>Hybrid user experience.</strong> Drone feed embedded in a floating MR window, driven by hand-tracking. Passthrough preserves spatial awareness — conceptually removing the need for a dedicated visual spotter, mandatory under French FPV regulations.</li>
+                </ul>`
+            },
+            {
+                heading: "Future Work",
+                body: `<p>Hardware consolidation by integrating the analog receiver directly inside the headset, and a virtual flight interface driven entirely by native hand-tracking — collapsing the full FPV ground station into a single standalone wearable.</p>`
+            }
+        ],
+        tech: ["Mixed Reality", "FPV", "Meta Quest 2", "Android", "Hand Tracking", "UVC", "Hardware"],
+        video: "images/fpv_drone.mp4",
+        pdf: "images/Poster_MR_FPV_Drone_Suva.pdf",
+        pdfLabel: "View Poster",
+        showPosterPreview: true
+    },
     "raymarching": {
         title: "Raymarching Scene Editor",
         subtitle: "Real-time Volumetric Rendering",
@@ -229,7 +269,14 @@ function initializePortfolio() {
             `<span class="bg-gray-700 text-gray-200 px-3 py-1 rounded-full text-sm font-mono">${t}</span>`
         ).join('');
 
-        let mediaContent = `<img src="${data.image}" alt="Project ${data.title} Image" loading="lazy" class="rounded-lg mb-6 max-h-[60vh] w-auto mx-auto object-contain border border-gray-700">`;
+        let mediaContent = '';
+        if (data.video) {
+            mediaContent = `<video src="${data.video}" controls muted loop playsinline class="rounded-lg mb-6 max-h-[60vh] w-auto mx-auto object-contain border border-gray-700 bg-black"></video>`;
+        } else if (data.image) {
+            mediaContent = `<img src="${data.image}" alt="Project ${data.title} Image" loading="lazy" class="rounded-lg mb-6 max-h-[60vh] w-auto mx-auto object-contain border border-gray-700">`;
+        } else if (data.pdf) {
+            mediaContent = `<iframe src="${data.pdf}#view=FitH" class="w-full h-[70vh] rounded-lg mb-6 border border-gray-700 bg-white" title="${data.title} PDF preview"></iframe>`;
+        }
 
         let buttons = `<div class="flex flex-wrap gap-4 mt-8">`;
         if (data.github) {
@@ -239,15 +286,38 @@ function initializePortfolio() {
             buttons += `<a href="${data.live}" target="_blank" rel="noopener noreferrer" class="border border-accent text-accent px-6 py-3 rounded hover:bg-accent hover:text-white transition-all font-mono flex items-center gap-2"><i class="fas fa-external-link-alt"></i> Live Page</a>`;
         }
         if (data.pdf) {
-            buttons += `<a href="${data.pdf}" target="_blank" rel="noopener noreferrer" class="bg-gray-800 text-white px-6 py-3 rounded hover:bg-gray-700 transition-all font-mono flex items-center gap-2"><i class="fas fa-file-pdf"></i> Read Paper</a>`;
+            const pdfLabel = data.pdfLabel || 'Read Paper';
+            buttons += `<a href="${data.pdf}" target="_blank" rel="noopener noreferrer" class="bg-gray-800 text-white px-6 py-3 rounded hover:bg-gray-700 transition-all font-mono flex items-center gap-2"><i class="fas fa-file-pdf"></i> ${pdfLabel}</a>`;
         }
         buttons += `</div>`;
+
+        let bodyContent;
+        if (data.sections) {
+            const leadAbstract = data.description
+                ? `<p class="text-gray-200 text-lg italic border-l-2 border-accent pl-4 mb-8">${data.description}</p>`
+                : '';
+            const sectionsHtml = data.sections.map(s => `
+                <section class="mb-6">
+                    <h4 class="text-accent font-semibold text-lg mb-3 font-mono uppercase tracking-wider">${s.heading}</h4>
+                    <div class="text-gray-300 text-base leading-relaxed">${s.body}</div>
+                </section>
+            `).join('');
+            const posterPreview = (data.showPosterPreview && data.pdf) ? `
+                <section class="mb-6">
+                    <h4 class="text-accent font-semibold text-lg mb-3 font-mono uppercase tracking-wider">Poster</h4>
+                    <iframe src="${data.pdf}#view=FitH" class="w-full h-[70vh] rounded-lg border border-gray-700 bg-white" title="${data.title} poster preview"></iframe>
+                </section>
+            ` : '';
+            bodyContent = leadAbstract + sectionsHtml + posterPreview;
+        } else {
+            bodyContent = `<p class="text-gray-300 text-lg">${data.description}</p>`;
+        }
 
         modalContent.innerHTML = `
             <h2 class="text-4xl font-bold text-accent mb-2">${data.title}</h2>
             <h3 class="text-xl text-gray-400 mb-6">${data.subtitle}</h3>
             ${mediaContent}
-            <p class="text-gray-300 text-lg">${data.description}</p>
+            ${bodyContent}
             <div class="flex flex-wrap gap-2 mt-6">${techBadges}</div>
             ${buttons}
         `;
