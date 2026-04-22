@@ -7,7 +7,7 @@ const projectsData = {
         subtitle: "Real-time Volumetric Rendering",
         description: "This project is an interactive 3D scene editor built with WebGPU and WGSL. It implements a real-time Ray Marching renderer allowing users to define, visualize, and manipulate spherical primitives through a synchronized UI panel and direct viewport interaction.",
         tech: ["HTML","JavaScript", "WebGPU", "WGSL", "Computer Graphics"],
-        image: "images/raymarching.gif", 
+        image: "images/raymarching.gif",
         github: "https://github.com/suva14/raymarching",
         live: "https://suva14.github.io/raymarching/"
     },
@@ -16,14 +16,14 @@ const projectsData = {
         subtitle: "Suspension Team Member",
         description: "Former member of the university racing team competing in Formula Student. CAD/CAM technician for the suspension system team. I designed complex aluminum support parts using 3DExperience (CAD) and manufactured them using CNC machining and lathes (CAM). This experience developed my precision engineering and rapid prototyping skills in an automotive context.",
         tech: ["Solidworks","3DExperience", "CNC Machining", "Automotive","CAD/CAM"],
-        image: "images/ecodrive.png", 
+        image: "images/ecodrive.png",
     },
     "tinygrad": {
         title: "MNIST Digit Recognition",
         subtitle: "Deep Learning with TinyGrad",
         description: "This project implements a complete machine learning pipeline from training to deployment: it involves training two neural networks (MLP and CNN) on the MNIST dataset using TinyGrad, compiling the resulting models to WebGPU shaders for browser execution, and integrating them into an interactive single-page application. This allows users to draw digits and receive real-time predictions, with the entire inference running client-side using WebGPU for fast predictions (~10-20ms) without any server calls.",
         tech: ["Python", "TinyGrad", "Computer Vision", "AI"],
-        image: "images/mnist.gif", 
+        image: "images/mnist.gif",
         github: "https://github.com/suva14/mnist_project",
         live: "https://suva14.github.io/mnist_project/"
     },
@@ -32,7 +32,7 @@ const projectsData = {
         subtitle: "Interactive Robotic Arm (Master 1 Innovation Project)",
         description: "Budd-E is an interactive robotic arm designed to assist and engage with users. It features voice command recognition for control and face tracking using OpenCV to maintain eye contact or follow the user. Developed as a Master 1 Innovation Project.",
         tech: ["Robotics", "Raspberry Pi", "OpenCV", "Voice Control", "ESP32"],
-        image: "images/budde.jpg", 
+        image: "images/budde.jpg",
     },
     "fire-detection": {
         title: "Wireless Fire Detection",
@@ -40,7 +40,7 @@ const projectsData = {
         description: "Reimplementation and performance analysis of a wireless fire detection system using Arduino Nano. I enhanced the original design by integrating a BME280 sensor for environmental monitoring (temperature, humidity, pressure) alongside smoke (MQ-2) and flame (KY-026) sensors. The study focused on the reliability of single-node detection in forest environments.",
         tech: ["IoT", "Arduino", "Sensors", "Research", "C++"],
         image: "images/miniature_applied_research.png",
-        pdf: "images/Applied_Research_Suva.pdf" 
+        pdf: "images/Applied_Research_Suva.pdf"
     },
     "definnov": {
         title: "Integrated Tourniquet",
@@ -59,9 +59,9 @@ const projectsData = {
     }
 };
 
-// Function to initialize the 3D scene and interactions
 function initializePortfolio() {
-    
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     // --- SETUP THREE.JS ---
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -73,12 +73,12 @@ function initializePortfolio() {
         canvasContainer.appendChild(renderer.domElement);
     } else {
         console.error("Error: #canvas-container element not found.");
-        return; 
+        return;
     }
 
     const geometry = new THREE.IcosahedronGeometry(2, 1);
-    const material = new THREE.MeshBasicMaterial({ 
-        color: 0xff4d29, 
+    const material = new THREE.MeshBasicMaterial({
+        color: 0xff4d29,
         wireframe: true,
         transparent: true,
         opacity: 0.3
@@ -89,7 +89,7 @@ function initializePortfolio() {
     const particlesGeometry = new THREE.BufferGeometry();
     const particlesCount = 700;
     const posArray = new Float32Array(particlesCount * 3);
-    for(let i = 0; i < particlesCount * 3; i++) {
+    for (let i = 0; i < particlesCount * 3; i++) {
         posArray[i] = (Math.random() - 0.5) * 15;
     }
     particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
@@ -115,17 +115,19 @@ function initializePortfolio() {
         mouseY = (event.clientY - windowHalfY);
     });
 
-    // --- ANIMATION LOOP ---
+    // --- ANIMATION LOOP (stopped if prefers-reduced-motion) ---
     function animate() {
-        targetX = mouseX * 0.001;
-        targetY = mouseY * 0.001;
-        sphere.rotation.y += 0.5 * (targetX - sphere.rotation.y);
-        sphere.rotation.x += 0.5 * (targetY - sphere.rotation.x);
-        sphere.rotation.z += 0.002;
-        particlesMesh.rotation.y = -mouseX * 0.0002;
-        particlesMesh.rotation.x = -mouseY * 0.0002;
+        if (!prefersReducedMotion) {
+            targetX = mouseX * 0.001;
+            targetY = mouseY * 0.001;
+            sphere.rotation.y += 0.5 * (targetX - sphere.rotation.y);
+            sphere.rotation.x += 0.5 * (targetY - sphere.rotation.x);
+            sphere.rotation.z += 0.002;
+            particlesMesh.rotation.y = -mouseX * 0.0002;
+            particlesMesh.rotation.x = -mouseY * 0.0002;
+            requestAnimationFrame(animate);
+        }
         renderer.render(scene, camera);
-        requestAnimationFrame(animate);
     }
     animate();
 
@@ -136,7 +138,35 @@ function initializePortfolio() {
         renderer.setSize(window.innerWidth, window.innerHeight);
     });
 
-    // --- SCROLL REVEAL (APPEAR/DISAPPEAR) ---
+    // --- TYPEWRITER ---
+    const typewriterEl = document.getElementById('typewriter-text');
+    const typewriterText = 'M2 Creative Technology Engineering Student';
+    if (typewriterEl) {
+        if (prefersReducedMotion) {
+            typewriterEl.textContent = typewriterText;
+        } else {
+            let i = 0;
+            function typeChar() {
+                if (i < typewriterText.length) {
+                    typewriterEl.textContent += typewriterText[i++];
+                    setTimeout(typeChar, 55);
+                }
+            }
+            typeChar();
+        }
+    }
+
+    // --- SCROLL PROGRESS BAR ---
+    const scrollProgressBar = document.getElementById('scroll-progress');
+    if (scrollProgressBar) {
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            scrollProgressBar.style.width = docHeight > 0 ? `${(scrollTop / docHeight) * 100}%` : '0%';
+        }, { passive: true });
+    }
+
+    // --- SCROLL REVEAL ---
     const revealElements = document.querySelectorAll('.reveal');
     const revealObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -149,116 +179,117 @@ function initializePortfolio() {
     }, { threshold: 0.1 });
     revealElements.forEach(el => revealObserver.observe(el));
 
+    // --- ACTIVE NAV LINKS ---
+    const navLinks = document.querySelectorAll('.nav-link[data-section]');
+    if (navLinks.length) {
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(link => {
+                        link.classList.toggle('active-nav', link.dataset.section === entry.target.id);
+                    });
+                }
+            });
+        }, { threshold: 0.3, rootMargin: '-80px 0px -50% 0px' });
+        document.querySelectorAll('section[id]').forEach(s => sectionObserver.observe(s));
+    }
+
+    // --- MOBILE MENU ---
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (menuToggle && mobileMenu) {
+        menuToggle.addEventListener('click', () => {
+            const isOpen = mobileMenu.classList.toggle('open');
+            menuToggle.classList.toggle('open', isOpen);
+            menuToggle.setAttribute('aria-expanded', String(isOpen));
+        });
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('open');
+                menuToggle.classList.remove('open');
+                menuToggle.setAttribute('aria-expanded', 'false');
+            });
+        });
+    }
 
     // --- MODAL MANAGEMENT ---
     const modal = document.getElementById('project-modal');
     const modalContent = document.getElementById('modal-project-content');
     const projectCards = document.querySelectorAll('.project-card');
     const closeModalButton = document.getElementById('close-modal');
-    const nav = document.querySelector('nav'); 
+    const nav = document.querySelector('nav');
 
-    // Helper: Calculate Scrollbar Width
-    const getScrollbarWidth = () => {
-        return window.innerWidth - document.documentElement.clientWidth;
-    };
+    const getScrollbarWidth = () => window.innerWidth - document.documentElement.clientWidth;
 
-    // Helper function to load modal content
     function openModalContent(projectId) {
         const data = projectsData[projectId];
         if (!data) return;
 
-        let techBadges = data.tech.map(t => 
+        let techBadges = data.tech.map(t =>
             `<span class="bg-gray-700 text-gray-200 px-3 py-1 rounded-full text-sm font-mono">${t}</span>`
         ).join('');
 
-        // CORRECTION IMAGE: max-h-[60vh], w-auto, mx-auto pour éviter qu'elle prenne tout l'écran
-        let mediaContent = `<img src="${data.image}" alt="Project ${data.title} Image" class="rounded-lg mb-6 max-h-[60vh] w-auto mx-auto object-contain border border-gray-700">`;
+        let mediaContent = `<img src="${data.image}" alt="Project ${data.title} Image" loading="lazy" class="rounded-lg mb-6 max-h-[60vh] w-auto mx-auto object-contain border border-gray-700">`;
 
-        let buttons = `
-            <div class="flex flex-wrap gap-4 mt-8">
-        `;
+        let buttons = `<div class="flex flex-wrap gap-4 mt-8">`;
         if (data.github) {
-            buttons += `
-                <a href="${data.github}" target="_blank" class="bg-gray-800 text-white px-6 py-3 rounded hover:bg-gray-700 transition-all font-mono flex items-center gap-2">
-                    <i class="fab fa-github"></i> View Code
-                </a>
-            `;
+            buttons += `<a href="${data.github}" target="_blank" rel="noopener noreferrer" class="bg-gray-800 text-white px-6 py-3 rounded hover:bg-gray-700 transition-all font-mono flex items-center gap-2"><i class="fab fa-github"></i> View Code</a>`;
         }
         if (data.live) {
-            buttons += `
-                <a href="${data.live}" target="_blank" class="border border-accent text-accent px-6 py-3 rounded hover:bg-accent hover:text-white transition-all font-mono flex items-center gap-2">
-                    <i class="fas fa-external-link-alt"></i> Live Page
-                </a>
-            `;
+            buttons += `<a href="${data.live}" target="_blank" rel="noopener noreferrer" class="border border-accent text-accent px-6 py-3 rounded hover:bg-accent hover:text-white transition-all font-mono flex items-center gap-2"><i class="fas fa-external-link-alt"></i> Live Page</a>`;
         }
         if (data.pdf) {
-             buttons += `
-                <a href="${data.pdf}" target="_blank" class="bg-gray-800 text-white px-6 py-3 rounded hover:bg-gray-700 transition-all font-mono flex items-center gap-2">
-                    <i class="fas fa-file-pdf"></i> Read Paper
-                </a>
-            `;
+            buttons += `<a href="${data.pdf}" target="_blank" rel="noopener noreferrer" class="bg-gray-800 text-white px-6 py-3 rounded hover:bg-gray-700 transition-all font-mono flex items-center gap-2"><i class="fas fa-file-pdf"></i> Read Paper</a>`;
         }
         buttons += `</div>`;
-
 
         modalContent.innerHTML = `
             <h2 class="text-4xl font-bold text-accent mb-2">${data.title}</h2>
             <h3 class="text-xl text-gray-400 mb-6">${data.subtitle}</h3>
-            
             ${mediaContent}
-            
             <p class="text-gray-300 text-lg">${data.description}</p>
-            
-            <div class="flex flex-wrap gap-2 mt-6">
-                ${techBadges}
-            </div>
-            
+            <div class="flex flex-wrap gap-2 mt-6">${techBadges}</div>
             ${buttons}
         `;
     }
 
-    // Function to close the modal
     function closeModal() {
         if (!modal.classList.contains('active')) return;
 
         modal.classList.remove('active');
         modalContent.classList.add('closing');
-        
+
         setTimeout(() => {
             modalContent.classList.remove('closing');
-            modal.classList.remove('visible'); 
-            
-            document.body.style.overflow = ''; 
-            document.body.style.paddingRight = ''; 
-            if(nav) nav.style.paddingRight = '';
-
+            modal.classList.remove('visible');
+            document.body.style.overflow = '';
+            document.body.style.paddingRight = '';
+            if (nav) nav.style.paddingRight = '';
             modalContent.innerHTML = '';
-        }, 300); 
+        }, 300);
     }
 
-    // Open management
     projectCards.forEach(card => {
         card.addEventListener('click', (event) => {
-            if (event.target.closest('a')) return; 
+            if (event.target.closest('a')) return;
 
             const projectId = card.dataset.project;
             if (!projectsData[projectId]) return;
-            
-            const scrollbarWidth = getScrollbarWidth();
 
+            const scrollbarWidth = getScrollbarWidth();
             openModalContent(projectId);
-            
-            modal.classList.add('visible'); 
-            void modal.offsetWidth; 
-            modal.classList.add('active'); 
+
+            modal.classList.add('visible');
+            void modal.offsetWidth;
+            modal.classList.add('active');
 
             document.body.style.paddingRight = `${scrollbarWidth}px`;
-            if(nav) {
+            if (nav) {
                 const navStyle = window.getComputedStyle(nav);
                 const originalPadding = parseFloat(navStyle.paddingRight);
                 nav.style.paddingRight = `${originalPadding + scrollbarWidth}px`;
             }
-            document.body.style.overflow = 'hidden'; 
+            document.body.style.overflow = 'hidden';
         });
     });
 
