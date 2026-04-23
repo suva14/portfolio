@@ -14,7 +14,17 @@ const projectsData = {
                     <li><strong>Receiver:</strong> Eachine ROTG02 — skew planar antennas + 5.8GHz RX → analog/digital (UVC) converter</li>
                     <li><strong>Processing:</strong> Meta Quest 2 (Android OS). The ROTG02 mounts as <code class="text-accent">/dev/video0</code>; the headset merges the drone feed with Passthrough.</li>
                     <li><strong>Radio Controller:</strong> BetaFPV Literadio 4</li>
-                </ul>`
+                </ul>
+                <div class="grid sm:grid-cols-2 gap-4 mt-6">
+                    <figure class="flex flex-col">
+                        <img src="images/tinywhoop.png" alt="BetaFPV Meteor 75 Pro Tinywhoop drone used as the transmitter" loading="lazy" class="rounded-lg border border-gray-700 bg-black object-contain w-full max-h-80">
+                        <figcaption class="text-gray-500 text-sm font-mono mt-2 text-center">Tinywhoop — analog camera + 5.8GHz VTX</figcaption>
+                    </figure>
+                    <figure class="flex flex-col">
+                        <img src="images/setup_quest2_receiver.png" alt="Meta Quest 2 headset with the Eachine ROTG02 analog receiver mounted on the strap" loading="lazy" class="rounded-lg border border-gray-700 bg-black object-contain w-full max-h-80">
+                        <figcaption class="text-gray-500 text-sm font-mono mt-2 text-center">Quest 2 + ROTG02 receiver (velcro-mounted)</figcaption>
+                    </figure>
+                </div>`
             },
             {
                 heading: "Iterations & Prototyping",
@@ -32,12 +42,18 @@ const projectsData = {
                 </ul>`
             },
             {
+                heading: "Capture Method",
+                body: `<p class="mb-4">The demo video above was filmed by pointing a camera directly through the Quest 2's lens. The Quest 2's native screen recorder and camera do <strong>not</strong> capture Passthrough — recordings render the real-world layer as a black background, making the result unwatchable for a demo of a Mixed Reality application. Shooting through the lens was the only way to capture what the pilot actually sees.</p>
+                <img src="images/view_inside_quest_lense.jpeg" alt="Photo taken through the Quest 2 lens showing the FPV drone feed floating over the real-world Passthrough" loading="lazy" class="rounded-lg my-4 max-h-[50vh] w-auto mx-auto object-contain border border-gray-700">
+                <p class="mt-4">From the <strong>Quest 3</strong> onwards, Passthrough can be recorded natively — in color and at significantly higher resolution than the grayscale Passthrough of the Quest 2 — which would remove this capture workaround entirely.</p>`
+            },
+            {
                 heading: "Future Work",
                 body: `<p>Hardware consolidation by integrating the analog receiver directly inside the headset, and a virtual flight interface driven entirely by native hand-tracking — collapsing the full FPV ground station into a single standalone wearable.</p>`
             }
         ],
         tech: ["Mixed Reality", "FPV", "Meta Quest 2", "Android", "Hand Tracking", "UVC", "Hardware"],
-        video: "images/fpv_drone.mp4",
+        video: "images/demo_mixed_reality_fpv.mp4",
         pdf: "images/Poster_MR_FPV_Drone_Suva.pdf",
         pdfLabel: "View Poster",
         showPosterPreview: true
