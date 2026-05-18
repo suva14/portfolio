@@ -66,7 +66,7 @@ const projectsData = {
                         </tr>
                     </thead>
                     <tbody class="text-gray-300">
-                        <tr><td class="border border-gray-700 p-2">Glass-to-glass latency</td><td class="border border-gray-700 p-2">~150 ms (est.)</td><td class="border border-gray-700 p-2">~10-20 ms</td></tr>
+                        <tr><td class="border border-gray-700 p-2">Glass-to-glass latency</td><td class="border border-gray-700 p-2">~150 ms</td><td class="border border-gray-700 p-2">~10-20 ms</td></tr>
                         <tr><td class="border border-gray-700 p-2">Image quality</td><td class="border border-gray-700 p-2">Analog SD (noisy)</td><td class="border border-gray-700 p-2">Analog SD (noisy)</td></tr>
                         <tr><td class="border border-gray-700 p-2">Spatial awareness (see surroundings)</td><td class="border border-gray-700 p-2"><strong>Yes, Passthrough</strong></td><td class="border border-gray-700 p-2">No (blacked out)</td></tr>
                         <tr><td class="border border-gray-700 p-2">Replaces a legal spotter?</td><td class="border border-gray-700 p-2"><strong>No</strong>, still required in France</td><td class="border border-gray-700 p-2">No</td></tr>
