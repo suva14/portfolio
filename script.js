@@ -5,20 +5,20 @@ const projectsData = {
     "fpv-drone": {
         title: "Mixed Reality FPV Drone",
         subtitle: "Innovation Project — ESILV A5 Createch · Supervised by Xiao Xiao & Gaël Musquet",
-        description: "Bridging legacy analog FPV drone technology with a Meta Quest 2 to create an affordable Mixed Reality cockpit — a sub-€50 alternative to dedicated FPV goggles, with Passthrough and hand-tracking for full spatial awareness.",
+        description: "Using a Meta Quest 2 as an FPV cockpit by feeding a 5.8 GHz analog drone signal into it through a USB receiver. This page covers the build, similar existing projects, a comparison with dedicated FPV gear, and a latency evaluation.",
         sections: [
             {
                 heading: "System Architecture",
                 body: `<ul class="list-disc list-inside space-y-1">
                     <li><strong>Transmitter:</strong> BetaFPV Meteor 75 Pro Tinywhoop (analog camera + 5.8GHz VTX)</li>
-                    <li><strong>Receiver:</strong> Eachine ROTG02 — skew planar antennas + 5.8GHz RX → analog/digital (UVC) converter</li>
-                    <li><strong>Processing:</strong> Meta Quest 2 (Android OS). The ROTG02 mounts as <code class="text-accent">/dev/video0</code>; the headset merges the drone feed with Passthrough.</li>
+                    <li><strong>Receiver:</strong> Eachine ROTG02, skew planar antennas, 5.8GHz RX to analog/digital (UVC) converter</li>
+                    <li><strong>Processing:</strong> Meta Quest 2 (Android OS). The ROTG02 mounts as <code class="text-accent">/dev/video0</code>; the headset shows the drone feed on top of Passthrough.</li>
                     <li><strong>Radio Controller:</strong> BetaFPV Literadio 4</li>
                 </ul>
                 <div class="grid sm:grid-cols-2 gap-4 mt-6">
                     <figure class="flex flex-col">
                         <img src="images/tinywhoop.png" alt="BetaFPV Meteor 75 Pro Tinywhoop drone used as the transmitter" loading="lazy" class="rounded-lg border border-gray-700 bg-black object-contain w-full max-h-80">
-                        <figcaption class="text-gray-500 text-sm font-mono mt-2 text-center">Tinywhoop — analog camera + 5.8GHz VTX</figcaption>
+                        <figcaption class="text-gray-500 text-sm font-mono mt-2 text-center">Tinywhoop, analog camera + 5.8GHz VTX</figcaption>
                     </figure>
                     <figure class="flex flex-col">
                         <img src="images/setup_quest2_receiver.png" alt="Meta Quest 2 headset with the Eachine ROTG02 analog receiver mounted on the strap" loading="lazy" class="rounded-lg border border-gray-700 bg-black object-contain w-full max-h-80">
@@ -27,36 +27,92 @@ const projectsData = {
                 </div>`
             },
             {
+                heading: "Software Used",
+                body: `<p class="mb-4">The Quest 2 shows the USB receiver's feed through its native app, so there is no setup and no software to install. The interface is the Quest's default one; Passthrough and hand-tracking are its built-in features.</p>
+                <p>The engineering work is the integration: getting the analog chain to mount as a UVC device on the Quest, fixing the receiver to the headset, and getting a usable result.</p>`
+            },
+            {
                 heading: "Iterations & Prototyping",
                 body: `<ol class="list-decimal list-inside space-y-3">
-                    <li><strong>PC-tethered concept.</strong> UVC receiver plugged into a Windows PC, monitored via webcam software. Latency (~100ms) was acceptable but the pilot was chained to a desk — portability, the whole point of FPV, was lost.</li>
-                    <li><strong>Standalone VR.</strong> OTG cable straight into the Quest 2's USB-C port; UVC apps sideloaded via SideQuest. Immersive and portable, but the receiver dangled from the headset and the bulky VR controllers were incompatible with holding a drone radio.</li>
-                    <li><strong>Mixed Reality + hand-tracking (final).</strong> Receiver secured with velcro to the headset strap. Native hand-tracking drives the UI (pinch to launch, tune frequency); a double-tap on the headset toggles Passthrough so the pilot sees the room and the physical radio while the drone feed stays centered on a floating virtual screen.</li>
+                    <li><strong>PC-tethered concept.</strong> UVC receiver on a Windows PC, viewed with webcam software.</li>
+                    <li><strong>Standalone VR.</strong> UVC receiver plugged directly into the Quest 2 USB-C port and displayed by the headset.</li>
+                    <li><strong>Mixed Reality (final).</strong> Receiver attached to the headset strap with velcro. The UVC app window sits in front of the pilot, and the Quest's built-in Passthrough shows the physical radio and the room.</li>
                 </ol>`
             },
             {
-                heading: "Contributions",
-                body: `<ul class="list-disc list-inside space-y-2">
-                    <li><strong>Hardware accessibility.</strong> Validated transmission chain turning a Quest 2 into FPV goggles for under €50 in added hardware, vs €200+ for dedicated analog goggles.</li>
-                    <li><strong>Hybrid user experience.</strong> Drone feed embedded in a floating MR window, driven by hand-tracking. Passthrough preserves spatial awareness — conceptually removing the need for a dedicated visual spotter, mandatory under French FPV regulations.</li>
+                heading: "Related Work",
+                body: `<p class="mb-4">Similar projects and references:</p>
+                <ul class="list-disc list-inside space-y-2 mb-4">
+                    <li>Hoarder Sam, <a href="https://www.youtube.com/watch?v=XOmeAAlSTWM" target="_blank" rel="noopener noreferrer" class="text-accent underline hover:text-white">"How to fly a FPV drone in mixed reality - Is this the future of FPV?"</a> (YouTube, Jan 2025). Same Eachine ROTG02, Quest and UVC app setup.</li>
+                    <li>Hackaday, <a href="https://hackaday.com/2025/01/03/fpv-flying-in-mixed-reality-is-easier-than-youd-think/" target="_blank" rel="noopener noreferrer" class="text-accent underline hover:text-white">"FPV Flying In Mixed Reality Is Easier Than You'd Think"</a> (Jan 2025). Confirms UVC receivers work directly on the Quest's Android, and that a spotter is still legally required.</li>
+                    <li>Tools and references used: the Eachine ROTG02 documentation, and Oscar Liang's pages on <a href="https://oscarliang.com/fpv-system/" target="_blank" rel="noopener noreferrer" class="text-accent underline hover:text-white">system comparison</a> and <a href="https://oscarliang.com/fpv-camera-latency/" target="_blank" rel="noopener noreferrer" class="text-accent underline hover:text-white">latency measurement</a>.</li>
+                </ul>
+                <p class="mb-2">Academic work on the same problem:</p>
+                <ul class="list-disc list-inside space-y-2">
+                    <li>Bashkirov et al., <a href="https://arxiv.org/abs/2410.16943" target="_blank" rel="noopener noreferrer" class="text-accent underline hover:text-white">FlightAR</a> (arXiv, 2024). Quest 3 with Passthrough for UAV control, with multiple video streams and object detection.</li>
+                    <li>Kato et al., <a href="https://dl.acm.org/doi/10.1145/3544548.3580681" target="_blank" rel="noopener noreferrer" class="text-accent underline hover:text-white">BirdViewAR</a> (CHI 2023). Surroundings-aware drone piloting with an augmented third-person view and a user study.</li>
+                    <li>A QoE model for FPV drone control over cellular (<a href="https://www.sciencedirect.com/science/article/pii/S1389128623005340" target="_blank" rel="noopener noreferrer" class="text-accent underline hover:text-white">Computer Networks, 2023</a>) sets an acceptability threshold of end-to-end latency below 250 ms. I use this as the benchmark in the evaluation.</li>
+                </ul>`
+            },
+            {
+                heading: "Comparison With Dedicated Analog Goggles",
+                body: `<div class="overflow-x-auto">
+                <table class="w-full text-sm border border-gray-700 border-collapse">
+                    <thead>
+                        <tr class="bg-gray-800 text-gray-200">
+                            <th class="border border-gray-700 p-2 text-left">Criterion</th>
+                            <th class="border border-gray-700 p-2 text-left">This project (Quest 2 + ROTG02)</th>
+                            <th class="border border-gray-700 p-2 text-left">Dedicated analog goggles</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr><td class="border border-gray-700 p-2">Glass-to-glass latency</td><td class="border border-gray-700 p-2">~150 ms (est.)</td><td class="border border-gray-700 p-2">~10-20 ms</td></tr>
+                        <tr><td class="border border-gray-700 p-2">Image quality</td><td class="border border-gray-700 p-2">Analog SD (noisy)</td><td class="border border-gray-700 p-2">Analog SD (noisy)</td></tr>
+                        <tr><td class="border border-gray-700 p-2">Spatial awareness (see surroundings)</td><td class="border border-gray-700 p-2"><strong>Yes, Passthrough</strong></td><td class="border border-gray-700 p-2">No (blacked out)</td></tr>
+                        <tr><td class="border border-gray-700 p-2">Replaces a legal spotter?</td><td class="border border-gray-700 p-2"><strong>No</strong>, still required in France</td><td class="border border-gray-700 p-2">No</td></tr>
+                        <tr><td class="border border-gray-700 p-2">Weight on head</td><td class="border border-gray-700 p-2">Heavy (Quest + ~50 g)</td><td class="border border-gray-700 p-2">Light to medium</td></tr>
+                    </tbody>
+                </table>
+                </div>
+                <p class="mt-4">Image quality is the same analog SD as dedicated analog goggles. This setup adds latency and weight, but it is the only one that lets the pilot see their surroundings through Passthrough. Seeing the drone and the environment directly is the safety role a spotter plays. It does not remove the legal spotter requirement in France, but it is the kind of situational awareness that could support adapting that rule.</p>`
+            },
+            {
+                heading: "Evaluation",
+                body: `<p class="font-semibold text-gray-200 mb-2">1. Glass-to-glass latency</p>
+                <p class="mb-3">A running timer is placed in front of the drone camera. The time shown inside the Quest is compared to the real timer at the same instant; the gap is the end-to-end latency.</p>
+                <div class="overflow-x-auto mb-4">
+                <table class="w-full text-sm border border-gray-700 border-collapse">
+                    <thead><tr class="bg-gray-800 text-gray-200"><th class="border border-gray-700 p-2 text-left">Stage</th><th class="border border-gray-700 p-2 text-left">Latency</th></tr></thead>
+                    <tbody class="text-gray-300">
+                        <tr><td class="border border-gray-700 p-2">End-to-end (this system, estimated)</td><td class="border border-gray-700 p-2">~150 ms</td></tr>
+                        <tr><td class="border border-gray-700 p-2">Dedicated analog goggles (reference)</td><td class="border border-gray-700 p-2">~10-20 ms</td></tr>
+                        <tr><td class="border border-gray-700 p-2">QoE acceptability threshold (literature)</td><td class="border border-gray-700 p-2">&lt; 250 ms</td></tr>
+                    </tbody>
+                </table>
+                </div>
+                <p class="mb-4">The analog link is fast; the bulk of the delay comes from the USB to Android to mixed-reality stage. The estimated total stays under the 250 ms usability threshold, so it is flyable. The setup trades latency for being able to see the surroundings.</p>
+                <p class="font-semibold text-gray-200 mb-2">2. Other measurements</p>
+                <ul class="list-disc list-inside space-y-1 mb-4">
+                    <li>Added head weight (receiver, mount, cable): about 50 g.</li>
+                    <li>Video is analog SD; the on-screen telemetry stays readable.</li>
+                    <li>Quest 2 Passthrough is grayscale and low resolution, which limits usability. Quest 3 fixes this.</li>
+                </ul>
+                <p class="font-semibold text-gray-200 mb-2">3. Observations in use</p>
+                <ul class="list-disc list-inside space-y-1">
+                    <li><strong>Works:</strong> the feed is legible, glancing at the real radio through Passthrough is fast, and the window can be placed and sized with the app's controls.</li>
+                    <li><strong>Friction:</strong> the window drifts with large head movements, the receiver gets warm, and the headset is front-heavy with the receiver on the strap.</li>
+                    <li><strong>Blocking:</strong> the analog signal breaks up at range, like any analog link.</li>
                 </ul>`
             },
             {
                 heading: "Capture Method",
-                body: `<p class="mb-4">The demo video above was filmed by pointing a camera directly through the Quest 2's lens. The Quest 2's native screen recorder and camera do <strong>not</strong> capture Passthrough — recordings render the real-world layer as a black background, making the result unwatchable for a demo of a Mixed Reality application. Shooting through the lens was the only way to capture what the pilot actually sees.</p>
+                body: `<p class="mb-4">The demo video above was filmed by pointing a camera through the Quest 2's lens. The Quest 2's screen recorder does not capture Passthrough; it records the real-world layer as black, which is no use for showing a mixed reality app. Filming through the lens was the only way to show what the pilot sees.</p>
                 <img src="images/view_inside_quest_lense.jpeg" alt="Photo taken through the Quest 2 lens showing the FPV drone feed floating over the real-world Passthrough" loading="lazy" class="rounded-lg my-4 max-h-[50vh] w-auto mx-auto object-contain border border-gray-700">
-                <p class="mt-4">From the <strong>Quest 3</strong> onwards, Passthrough can be recorded natively — in color and at significantly higher resolution than the grayscale Passthrough of the Quest 2 — which would remove this capture workaround entirely.</p>`
-            },
-            {
-                heading: "Future Work",
-                body: `<p>Hardware consolidation by integrating the analog receiver directly inside the headset, and a virtual flight interface driven entirely by native hand-tracking — collapsing the full FPV ground station into a single standalone wearable.</p>`
+                <p class="mt-4">From the Quest 3 onwards, Passthrough records natively, in colour and at higher resolution than the Quest 2's grayscale Passthrough, which removes this workaround.</p>`
             }
         ],
         tech: ["Mixed Reality", "FPV", "Meta Quest 2", "Android", "Hand Tracking", "UVC", "Hardware"],
-        video: "images/demo_mixed_reality_fpv.mp4",
-        pdf: "images/Poster_MR_FPV_Drone_Suva.pdf",
-        pdfLabel: "View Poster",
-        showPosterPreview: true
+        video: "images/demo_mixed_reality_fpv.mp4"
     },
     "raymarching": {
         title: "Raymarching Scene Editor",
@@ -345,6 +401,10 @@ function initializePortfolio() {
         modal.classList.remove('active');
         modalContent.classList.add('closing');
 
+        if (location.hash && projectsData[decodeURIComponent(location.hash.slice(1))]) {
+            history.replaceState(null, '', location.pathname + location.search);
+        }
+
         setTimeout(() => {
             modalContent.classList.remove('closing');
             modal.classList.remove('visible');
@@ -355,27 +415,33 @@ function initializePortfolio() {
         }, 300);
     }
 
+    function openProjectModal(projectId) {
+        if (!projectsData[projectId]) return;
+
+        const scrollbarWidth = getScrollbarWidth();
+        openModalContent(projectId);
+
+        modal.classList.add('visible');
+        void modal.offsetWidth;
+        modal.classList.add('active');
+
+        document.body.style.paddingRight = `${scrollbarWidth}px`;
+        if (nav) {
+            const navStyle = window.getComputedStyle(nav);
+            const originalPadding = parseFloat(navStyle.paddingRight);
+            nav.style.paddingRight = `${originalPadding + scrollbarWidth}px`;
+        }
+        document.body.style.overflow = 'hidden';
+
+        if (location.hash !== `#${projectId}`) {
+            history.replaceState(null, '', `#${projectId}`);
+        }
+    }
+
     projectCards.forEach(card => {
         card.addEventListener('click', (event) => {
             if (event.target.closest('a')) return;
-
-            const projectId = card.dataset.project;
-            if (!projectsData[projectId]) return;
-
-            const scrollbarWidth = getScrollbarWidth();
-            openModalContent(projectId);
-
-            modal.classList.add('visible');
-            void modal.offsetWidth;
-            modal.classList.add('active');
-
-            document.body.style.paddingRight = `${scrollbarWidth}px`;
-            if (nav) {
-                const navStyle = window.getComputedStyle(nav);
-                const originalPadding = parseFloat(navStyle.paddingRight);
-                nav.style.paddingRight = `${originalPadding + scrollbarWidth}px`;
-            }
-            document.body.style.overflow = 'hidden';
+            openProjectModal(card.dataset.project);
         });
     });
 
@@ -387,6 +453,24 @@ function initializePortfolio() {
     });
     modal.addEventListener('click', (e) => {
         if (e.target === modal) {
+            closeModal();
+        }
+    });
+
+    // --- DEEP LINK (e.g. /#fpv-drone opens that project directly) ---
+    const getHashProject = () => {
+        const id = decodeURIComponent(location.hash.slice(1));
+        return projectsData[id] ? id : null;
+    };
+
+    const initialProject = getHashProject();
+    if (initialProject) openProjectModal(initialProject);
+
+    window.addEventListener('hashchange', () => {
+        const id = getHashProject();
+        if (id) {
+            if (!modal.classList.contains('active')) openProjectModal(id);
+        } else if (modal.classList.contains('active')) {
             closeModal();
         }
     });
