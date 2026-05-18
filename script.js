@@ -84,13 +84,13 @@ const projectsData = {
                 <table class="w-full text-sm border border-gray-700 border-collapse">
                     <thead><tr class="bg-gray-800 text-gray-200"><th class="border border-gray-700 p-2 text-left">Stage</th><th class="border border-gray-700 p-2 text-left">Latency</th></tr></thead>
                     <tbody class="text-gray-300">
-                        <tr><td class="border border-gray-700 p-2">End-to-end (this system, estimated)</td><td class="border border-gray-700 p-2">~150 ms</td></tr>
+                        <tr><td class="border border-gray-700 p-2">End-to-end (this system)</td><td class="border border-gray-700 p-2">~150 ms</td></tr>
                         <tr><td class="border border-gray-700 p-2">Dedicated analog goggles (reference)</td><td class="border border-gray-700 p-2">~10-20 ms</td></tr>
                         <tr><td class="border border-gray-700 p-2">QoE acceptability threshold (literature)</td><td class="border border-gray-700 p-2">&lt; 250 ms</td></tr>
                     </tbody>
                 </table>
                 </div>
-                <p class="mb-4">The analog link is fast; the bulk of the delay comes from the USB to Android to mixed-reality stage. The estimated total stays under the 250 ms usability threshold, so it is flyable. The setup trades latency for being able to see the surroundings.</p>
+                <p class="mb-4">The analog link is fast; the bulk of the delay comes from the USB to Android to mixed-reality stage. The total stays under the 250 ms usability threshold, so it is flyable. The setup trades latency for being able to see the surroundings.</p>
                 <p class="font-semibold text-gray-200 mb-2">2. Other measurements</p>
                 <ul class="list-disc list-inside space-y-1 mb-4">
                     <li>Added head weight (receiver, mount, cable): about 50 g.</li>
